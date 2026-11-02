@@ -1,0 +1,31 @@
+{
+ "base_rate": 0.197,
+ "oracle_auc_true_probabilities": 0.6967,
+ "logistic": {
+  "auc": 0.6939,
+  "brier": 0.1441,
+  "psi_amount": 0.0013,
+  "oracle_auc": 0.6967,
+  "gate": {
+   "release": true,
+   "failed": []
+  }
+ },
+ "gbm": {
+  "auc": 0.6906,
+  "brier": 0.145,
+  "psi_amount": 0.0013,
+  "oracle_auc": 0.6967,
+  "gate": {
+   "release": true,
+   "failed": []
+  }
+ },
+ "drifted_batch_psi_amount": 0.625,
+ "drifted_batch_gate": {
+  "release": false,
+  "failed": [
+   "psi_amount"
+  ]
+ }
+}
