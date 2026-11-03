@@ -1,9 +1,21 @@
-"""Synthetic small business invoices with a known generating process for late payment (60+ days)."""
-import numpy as np,pandas as pd
-def make(n=20000,seed=0,shift=0.0):
-    r=np.random.default_rng(seed)
-    df=pd.DataFrame(dict(amount=np.round(r.lognormal(7+shift,1.0,n),2),terms_days=r.choice([15,30,45,60],n),customer_age_m=r.integers(0,120,n),
-        prior_late_rate=r.beta(1.5,6,n),industry=r.choice(["retail","construction","services","food","tech"],n),is_new_customer=r.random(n)<0.2))
-    ind={"retail":0,"construction":.7,"services":.1,"food":.4,"tech":-.2}
-    z=-2.6+0.35*np.log(df.amount/1000+1)+0.012*(df.terms_days-30)-0.008*df.customer_age_m+4.0*df.prior_late_rate+df.industry.map(ind)+0.6*df.is_new_customer
-    df["p_true"]=1/(1+np.exp(-z)); df["late"]=(r.random(n)<df.p_true).astype(int); return df
+"""REAL data: "Default of Credit Card Clients" (Yeh & Lien 2009, UCI ML Repository id 350,
+CC BY 4.0; CSV from huggingface.co/datasets/scikit-learn/credit-card-clients).
+30,000 real card holders in Taiwan, 2005: credit limit, age, 6 months of repayment status
+(months late), bill and payment amounts, and whether they defaulted next month.
+Closest public substitute for small business invoice late payment: no public dataset of real
+SMB invoices with payment outcomes and a clear licence was found. SEX, MARRIAGE and EDUCATION
+are dropped from features on purpose."""
+from pathlib import Path
+import pandas as pd
+
+F = Path(__file__).resolve().parent.parent / "data" / "UCI_Credit_Card.csv"
+NUM = ["LIMIT_BAL", "AGE"] + [f"PAY_{i}" for i in (0, 2, 3, 4, 5, 6)] + [f"BILL_AMT{i}" for i in range(1, 7)] + [f"PAY_AMT{i}" for i in range(1, 7)]
+
+
+def load():
+    df = pd.read_csv(F).rename(columns={"default.payment.next.month": "late"})
+    return df
+
+
+def split(df, seed=0, frac=0.7):
+    tr = df.sample(frac=frac, random_state=seed); return tr, df.drop(tr.index)

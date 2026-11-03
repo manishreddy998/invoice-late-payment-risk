@@ -1,0 +1,38 @@
+{
+ "rows_train": 21000,
+ "rows_test": 9000,
+ "base_rate": 0.2271,
+ "rule_baseline_auc (PAY_0>=1)": 0.698,
+ "logistic": {
+  "auc": 0.7223,
+  "brier": 0.1493,
+  "psi_limit": 0.001,
+  "rule_auc": 0.698,
+  "gate": {
+   "release": true,
+   "failed": []
+  }
+ },
+ "gbm": {
+  "auc": 0.7805,
+  "brier": 0.138,
+  "psi_limit": 0.001,
+  "rule_auc": 0.698,
+  "gate": {
+   "release": true,
+   "failed": []
+  }
+ },
+ "shifted_batch": {
+  "rows": 2349,
+  "psi_limit": 8.7157,
+  "late_rate": 0.149,
+  "gbm_auc_on_batch": 0.7582
+ },
+ "shifted_batch_gate": {
+  "release": false,
+  "failed": [
+   "psi_limit"
+  ]
+ }
+}
