@@ -60,6 +60,7 @@ Train 21,000, test 9,000, seed 0. `python -m risk.train` writes `docs/results.js
 ## How to run
 ```bash
 pip install -r requirements.txt   # pandas, scikit-learn, streamlit
+bash scripts/download_data.sh     # real UCI CSV from Hugging Face
 python -m risk.train
 pytest -q
 streamlit run app/streamlit_app.py
